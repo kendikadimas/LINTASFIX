@@ -49,6 +49,10 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('rentals', RentalController::class)->only(['index', 'show', 'update']);
     Route::post('/transactions/{transaction}/upload-proof', [TransactionController::class, 'uploadPaymentProof'])
          ->name('transactions.upload-payment-proof');
+    Route::post('/items/bulk-delete', [ItemController::class, 'bulkDelete'])->name('items.bulk-delete');
+    Route::post('/transactions/{transaction}/cancel', [TransactionController::class, 'cancel'])->name('transactions.cancel');
+    Route::post('/rentals/{rental}/cancel', [RentalController::class, 'cancel'])->name('rentals.cancel');
+    Route::post('/rentals/{rental}/complete-return', [RentalController::class, 'completeReturn'])->name('rentals.complete-return');
 });
 
 /*

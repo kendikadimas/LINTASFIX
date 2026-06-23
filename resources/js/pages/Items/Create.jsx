@@ -15,11 +15,12 @@ export default function Create({ auth, categories = [] }) {
         name: '',
         description: '',
         price: '',
-        rental_price_per_day: '', // <-- Tambahkan ini
+        rental_price_per_day: '',
+        deposit_amount: '',
         category_id: '',
         condition: 'good',
         location: '',
-        availability_type: 'sale', // <-- Tambahkan ini, default ke 'sale'
+        availability_type: 'sale',
         images: [],
     });
     
@@ -78,6 +79,9 @@ export default function Create({ auth, categories = [] }) {
                                 {/* Conditional Rental Price */}
                                 {['rent', 'both'].includes(data.availability_type) && (
                                     <InputField label="Rental Price per Day (Rp) *" name="rental_price_per_day" type="number" placeholder="10000" min="0" value={data.rental_price_per_day} onChange={e => setData('rental_price_per_day', e.target.value)} error={errors.rental_price_per_day} required />
+                                )}
+                                {['rent', 'both'].includes(data.availability_type) && (
+                                    <InputField label="Security Deposit (Rp)" name="deposit_amount" type="number" placeholder="50000" min="0" value={data.deposit_amount} onChange={e => setData('deposit_amount', e.target.value)} error={errors.deposit_amount} />
                                 )}
                            </div>
                         </div>

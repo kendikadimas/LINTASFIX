@@ -48,6 +48,8 @@ class RentalController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * Note: Rental creation now handled by CheckoutController@store.
+     * This method kept for backward compatibility.
      */
     public function store(Request $request)
     {
@@ -55,7 +57,7 @@ class RentalController extends Controller
             'item_id' => 'required|exists:items,id',
             'start_date' => 'required|date|after_or_equal:today',
             'end_date' => 'required|date|after:start_date',
-            'rental_notes' => 'nullable|string',
+            'notes' => 'nullable|string',
         ]);
 
         $item = Item::findOrFail($validated['item_id']);
@@ -71,7 +73,7 @@ class RentalController extends Controller
         $startDate = Carbon::parse($validated['start_date']);
         $endDate = Carbon::parse($validated['end_date']);
         $duration = $startDate->diffInDays($endDate) + 1;
-        $totalPrice = $duration * $item->rental_price_per_day;
+        $totalAmount = $duration * $item->rental_price_per_day;
 
         $rental = Rental::create([
             'item_id' => $item->id,
@@ -79,10 +81,12 @@ class RentalController extends Controller
             'owner_id' => $item->user_id,
             'start_date' => $startDate,
             'end_date' => $endDate,
-            'total_price' => $totalPrice,
-            'security_deposit' => $totalPrice * 0.5, // 50% dari total harga sebagai deposit
-            'status' => 'pending',
-            'rental_notes' => $validated['rental_notes'],
+            'daily_rate' => $item->rental_price_per_day,
+            'total_days' => $duration,
+            'total_amount' => $totalAmount,
+            'deposit_amount' => $totalAmount * 0.5,
+            'status' => 'pending_payment',
+            'notes' => $validated['notes'],
         ]);
 
         return redirect()->route('rentals.show', $rental)->with('success', 'Permintaan sewa berhasil dibuat!');
@@ -166,7 +170,7 @@ class RentalController extends Controller
             abort(403);
         }
 
-        if (!in_array($rental->status, ['pending', 'confirmed'])) {
+        if (!in_array($rental->status, ['pending_payment', 'confirmed'])) {
             return back()->withErrors(['status' => 'Rental tidak dapat dibatalkan']);
         }
 

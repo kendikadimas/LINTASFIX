@@ -171,7 +171,7 @@ class TransactionController extends Controller
             abort(403);
         }
 
-        if (!in_array($transaction->status, ['pending', 'paid'])) {
+        if (!in_array($transaction->status, ['pending_payment', 'paid'])) {
             return back()->withErrors(['status' => 'Transaksi tidak dapat dibatalkan']);
         }
 

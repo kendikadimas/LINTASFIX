@@ -162,6 +162,7 @@ public function store(Request $request): RedirectResponse
         // Validasi harga akan dilakukan secara kondisional di bawah
         'price' => 'nullable|numeric|min:0',
         'rental_price_per_day' => 'nullable|numeric|min:0',
+        'deposit_amount' => 'nullable|numeric|min:0',
     ]);
 
     $imagePaths = [];
@@ -280,7 +281,24 @@ public function store(Request $request): RedirectResponse
 
         $item->update($validated);
 
-        return redirect()->route('items.show', $item)->with('success', 'Item berhasil diperbarui!');
+        return redirect('/items/' . $item->slug)->with('success', 'Item berhasil diperbarui!');
+    }
+
+    /**
+     * Bulk delete items
+     */
+    public function bulkDelete(Request $request)
+    {
+        $validated = $request->validate([
+            'ids' => 'required|array',
+            'ids.*' => 'exists:items,id',
+        ]);
+
+        Item::whereIn('id', $validated['ids'])
+            ->where('user_id', Auth::id())
+            ->update(['is_active' => false]);
+
+        return redirect()->back()->with('success', 'Item berhasil dihapus!');
     }
 
     /**
