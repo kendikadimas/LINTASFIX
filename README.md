@@ -1,11 +1,11 @@
 <div align="center">
-  <img src="public/hero.png" alt="LINTAS Banner" width="100%" />
+  <img src="public/hero.png" alt="Soedirent Banner" width="100%" />
 </div>
 
 <br/>
 
 <div align="center">
-  <h1 align="center" style="border: none;">📦 LINTAS</h1>
+  <h1 align="center" style="border: none;">📦 Soedirent</h1>
   <p align="center">
     <strong>Platform Jual Beli & Sewa Perlengkapan Mahasiswa</strong>
     <br/>
@@ -53,7 +53,7 @@
 
 ## 🎯 Tentang Platform
 
-LINTAS adalah marketplace berbasis kampus yang dirancang khusus untuk mahasiswa. Platform ini memungkinkan mahasiswa untuk:
+Soedirent adalah marketplace berbasis kampus yang dirancang khusus untuk mahasiswa. Platform ini memungkinkan mahasiswa untuk:
 
 - **Menjual** perlengkapan kuliah bekas pakai (second) maupun baru
 - **Membeli** kebutuhan akademik dari sesama mahasiswa
